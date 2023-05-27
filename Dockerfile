@@ -5,11 +5,7 @@ RUN apt-get update -y && apt-get install -y \
         wget                                \
         vim                                 \
         build-essential                     \
-        cmake                               \
-        libopenblas-dev                     \
-        liblapack-dev                       \
-        libarpack2-dev                      \
-        libsuperlu-dev
+        cmake
 
 # gsl
 RUN wget https://ftp.gnu.org/gnu/gsl/gsl-2.7.tar.gz \
@@ -26,7 +22,6 @@ RUN wget https://sourceforge.net/projects/arma/files/armadillo-12.4.0.tar.xz \
         && tar -xvf armadillo-12.4.0.tar.xz                                  \
         && cd armadillo-12.4.0                                               \
         && ./configure                                                       \
-        && cmake -D OPENBLAS_PROVIDES_LAPACK=true .                          \
         && make                                                              \
         && make install                                                      \
         && cd ..                                                             \
@@ -65,13 +60,11 @@ RUN Rscript -e "remotes::install_version(package = 'roxygen2', version = '5.0.1'
 
 # dynr
 RUN git clone -b arma https://github.com/mhunter1/dynr.git \
-        && git checkout arma                               \
-        && git pull --rebase                               \
         && cd dynr                                         \
         && ./configure                                     \
         && make clean install                              \
         && cd ..                                           \
-        && rm -rf dyn
+        && rm -rf dynr
 
 # author
 MAINTAINER "Ivan Jacob Agaloos Pesigan <learn.jeksterslab@gmail.com>"
