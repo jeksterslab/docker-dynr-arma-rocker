@@ -1,0 +1,27 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+
+# RStudio files
+.Rproj.user/
+
+# RStudio project
+*.Rproj
+
+# Mac
+.DS_Store
+
+# secrets
+*secrets*
+
+# sif
+*.sif
+
+# .clone.sh
+.clone.sh
