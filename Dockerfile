@@ -2,25 +2,7 @@ FROM rocker/tidyverse
 
 RUN apt-get update -y && apt-get install -y \
         wget                                \
-        vim                                 \
-        build-essential                     \
-        cmake                            && \
-        wget https://ftp.gnu.org/gnu/gsl/gsl-2.7.tar.gz && \
-        tar -zxvpf gsl-2.7.tar.gz                       && \
-        cd gsl-2.7                                      && \
-        ./configure                                     && \
-        make                                            && \
-        make install                                    && \
-        cd ..                                           && \
-        rm -rf gsl*                                     && \
-        wget https://sourceforge.net/projects/arma/files/armadillo-12.4.0.tar.xz && \
-        tar -xvf armadillo-12.4.0.tar.xz                                         && \
-        cd armadillo-12.4.0                                                      && \
-        ./configure                                                              && \
-        make                                                                     && \
-        make install                                                             && \
-        cd ..                                                                    && \
-        rm -rf armadillo*                                                        && \
+        vim                              && \
         install2.r --error \
         devtools       \
         remotes        \
