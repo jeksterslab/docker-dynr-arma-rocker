@@ -3,6 +3,11 @@ FROM rocker/tidyverse
 RUN apt-get update -y && apt-get install -y \
         wget                                \
         vim                                 \
+        cmake                               \
+        libopenblas-dev                     \
+        liblapack-dev                       \
+        libarpack2-dev                      \
+        libsuperlu-dev                      \
         libgsl-dev                          \
         libarmadillo-dev                 && \
         install2.r --error \
