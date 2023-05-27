@@ -2,7 +2,9 @@ FROM rocker/tidyverse
 
 RUN apt-get update -y && apt-get install -y \
         wget                                \
-        vim                              && \
+        vim                                 \
+        libgsl-dev                          \
+        libarmadillo-dev                 && \
         install2.r --error \
         devtools       \
         remotes        \
