@@ -43,6 +43,7 @@ RUN apt-get update -y && apt-get install -y \
         Rcpp           \
         RcppArmadillo  \
         RcppGSL        \
+        Ryacas         \
         testthat       \
         knitr          \
         rmarkdown   && \
