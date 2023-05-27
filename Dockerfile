@@ -51,7 +51,14 @@ RUN apt-get update -y && apt-get install -y \
                 version = '5.0.1',                           \
                 repos = c(CRAN = 'https://cran.rstudio.com') \
                 );                                           \
-                tinytex::install_tinytex()"
+                tinytex::install_tinytex()"               && \
+        git clone -b arma https://github.com/mhunter1/dynr.git    && \
+        cd dynr                                                   && \
+        sed -i 's/library/site-library/g' src/Makevars.in         && \
+        ./configure                                               && \
+        make clean install                                        && \
+        cd ..                                                     && \
+        rm -rf dynr
 
 # author
 MAINTAINER "Ivan Jacob Agaloos Pesigan <learn.jeksterslab@gmail.com>"
