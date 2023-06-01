@@ -17,7 +17,16 @@ function apt_install() {
 
 apt_install           \
     wget              \
+    parallel          \
     vim               \
+    nnn               \
+    tmux              \
+    curl              \
+    less              \
+    bat               \
+    rsync             \
+    openssh-server    \
+    neofetch          \
     build-essential   \
     cmake             \
     libopenblas-dev   \
