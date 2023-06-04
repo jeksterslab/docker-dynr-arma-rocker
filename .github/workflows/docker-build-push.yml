@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  docker:
 
     runs-on: ubuntu-latest
 
@@ -33,3 +33,25 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:latest
+
+  apptainer: # https://github.com/marketplace/actions/setup-apptainer
+
+    needs: docker
+
+    runs-on: ubuntu-latest
+
+    steps:
+      -
+        name: Checkout 
+        uses: actions/checkout@v2
+      -
+        name: Set up Singularity
+        uses: eWaterCycle/setup-apptainer@v2
+        with:
+          apptainer-version: 1.1.2
+      -
+        name: Build Apptainer container
+        run: apptainer build ${{ secrets.DOCKER_HUB_CONTAINER }}.sif docker://${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:latest
+      -
+        name: Run Apptainer container
+        run: apptainer run ${{ secrets.DOCKER_HUB_CONTAINER }}.sif cat /.singularity.d/Singularity

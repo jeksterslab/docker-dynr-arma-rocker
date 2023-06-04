@@ -1,5 +1,5 @@
-jeksterslab/dynr-arma-rocker
-=======================
+# jeksterslab/dynr-arma-rocker
+
 Ivan Jacob Agaloos Pesigan
 
 <!-- badges: start -->
@@ -8,24 +8,10 @@ Ivan Jacob Agaloos Pesigan
 
 ## Description
 
-Docker and Apptainer/Singularity containers for R projects based on `rocker/tidyverse` with the `dynr` package (arma branch).
+A Docker container for `R` projects based on the [Rocker Project](https://rocker-project.org/)
+with the [dynr](https://github.com/mhunter1/dynr) (arma branch) package.
 
-## Build Docker Container
-
-The `Docker Build and Push` GitHub action builds the Docker container and pushes it to Docker Hub.
-
-## Build Apptainer/Singularity Image File
-
-To build the Apptainer/Singularity image file (`dynr-arma-rocker.sif`),
-run the following.
-
-```bash
-git clone https://github.com/jeksterslab/docker-dynr-arma-rocker.git
-cd docker-dynr-arma-rocker
-make
-```
-
-## Docker Run
+## Run
 
 To launch `Rstudio Server`, run the following.
 
@@ -37,9 +23,3 @@ Open `http://localhost:8787` on your web browser to launch `Rstudio Server`.
 
 - username: rstudio
 - password: yourpassword
-
-## Apptainer Shell
-
-```bash
-apptainer shell dynr-arma-rocker.sif
-```

@@ -1,7 +1,7 @@
 .PHONY: build term clean
 
 build:
-	sudo -E bash apptainer.sh
+	@if (( $EUID != 0 )); then sudo -E bash apptainer.sh; else bash apptainer.sh; fi
 
 term:
 	@echo Building .bashrc and .vimrc...
