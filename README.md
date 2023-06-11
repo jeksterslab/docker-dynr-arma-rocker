@@ -3,7 +3,7 @@
 Ivan Jacob Agaloos Pesigan
 
 <!-- badges: start -->
-[![Docker Build and Push](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push.yml)
+[![Docker and Apptainer Build and Push](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push.yml)
 <!-- badges: end -->
 
 ## Description
