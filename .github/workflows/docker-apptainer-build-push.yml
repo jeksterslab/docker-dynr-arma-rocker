@@ -39,7 +39,7 @@ jobs:
         name: Set up Singularity
         uses: eWaterCycle/setup-apptainer@v2
         with:
-          apptainer-version: 1.1.2
+          apptainer-version: 1.1.9
       -
         name: Build Apptainer container
         run: apptainer build ${{ secrets.DOCKER_HUB_CONTAINER }}.sif docker://${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:${{ env.NOW }}

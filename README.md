@@ -8,10 +8,19 @@ Ivan Jacob Agaloos Pesigan
 
 ## Description
 
-A Docker container for `R` projects based on the [Rocker Project](https://rocker-project.org/)
+Docker and Apptainer/Singularity containers for `R` projects based on the [Rocker Project](https://rocker-project.org/)
 with the [dynr](https://github.com/mhunter1/dynr) (arma branch) package.
 
-## Run
+## GitHub Actions
+
+The `Docker and Apptainer Build and Push` GitHub action performs the following:
+
+- Builds the Docker image specified by the `Dockerfile`.
+- Pushes the image to [DockerHub](https://hub.docker.com/repository/docker/jeksterslab/dynr-arma-rocker/general) using the tags `latest` and `date and time of build (YEAR-MM-DD-HHMMSS)`.
+- Builds the Singularity Image File (SIF) using Apptainer based on the Docker Hub image from the previous step.
+- Creates a GitHub release named `sif-YEAR-MM-DD-HHMMSS`. Note that `sif-YEAR-MM-DD-HHMMSS.zip` contains the SIF. 
+
+## Docker Shell
 
 To launch `Rstudio Server`, run the following.
 
@@ -23,3 +32,11 @@ Open `http://localhost:8787` on your web browser to launch `Rstudio Server`.
 
 - username: rstudio
 - password: yourpassword
+
+## Apptainer Shell
+
+Download and unzip `sif-YEAR-MM-DD-HHMMSS.zip` from the GitHub release to extract `dynr-arma-rocker.sif`.
+
+```bash
+apptainer shell dynr-arma-rocker.sif
+```
