@@ -20,7 +20,7 @@ The `Docker and Apptainer Build and Push` GitHub actions workflow performs the f
 - Builds the Singularity Image File (SIF) using Apptainer based on the Docker Hub image from the previous step.
 - Creates a GitHub release named `sif-YEAR-MM-DD-HHMMSS`. Note that `sif-YEAR-MM-DD-HHMMSS.zip` contains the SIF. 
 
-## Docker Shell
+## Docker Container
 
 To launch `Rstudio Server`, run the following.
 
