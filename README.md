@@ -13,7 +13,7 @@ with the [dynr](https://github.com/mhunter1/dynr) (arma branch) package.
 
 ## GitHub Actions
 
-The `Docker and Apptainer Build and Push` GitHub action performs the following:
+The `Docker and Apptainer Build and Push` GitHub actions workflow performs the following:
 
 - Builds the Docker image specified by the `Dockerfile`.
 - Pushes the image to [DockerHub](https://hub.docker.com/repository/docker/jeksterslab/dynr-arma-rocker/general) using the tags `latest` and `date and time of build (YEAR-MM-DD-HHMMSS)`.
