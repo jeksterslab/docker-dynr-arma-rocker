@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
 
@@ -12,9 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - 
-        name: Set the tag
-        run: |
-          echo "NOW=$( date '+%F-%H%M%S' )" >> $GITHUB_ENV
+        name: Set the environment variables
+        run: echo "NOW=$( date '+%F-%H%M%S%2N' )" >> $GITHUB_ENV
       -
         name: Checkout 
         uses: actions/checkout@v3
@@ -45,7 +45,9 @@ jobs:
         run: apptainer build ${{ secrets.DOCKER_HUB_CONTAINER }}.sif docker://${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:${{ env.NOW }}
       -
         name: Run Apptainer container
-        run: apptainer run ${{ secrets.DOCKER_HUB_CONTAINER }}.sif cat /etc/os-release
+        run: |
+          apptainer exec ${{ secrets.DOCKER_HUB_CONTAINER }}.sif cat /etc/os-release
+          apptainer exec ${{ secrets.DOCKER_HUB_CONTAINER }}.sif cat /srv/build/CONTAINER_RELEASE_MSG > release.txt
       -
         name: Upload Singularity Image File
         uses: actions/upload-artifact@v3
@@ -65,7 +67,7 @@ jobs:
         uses: thedoctor0/zip-release@0.7.1
         with:
           filename: ${{ secrets.DOCKER_HUB_CONTAINER }}.zip
-          exclusions: '*.git* *.md Dockerfile /src/*'
+          exclusions: '*.git* *.md *.txt Dockerfile /src/*'
       - 
         name: Create GitHub release
         id: create_release
@@ -75,6 +77,7 @@ jobs:
         with:
           tag_name: ${{ env.NOW }}
           release_name: sif-${{ env.NOW }}
+          body_path: ./release.txt
           draft: false
           prerelease: false
       - 
