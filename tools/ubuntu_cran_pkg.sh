@@ -31,3 +31,9 @@ install2.r --error --skipinstalled -n -1 \
   tibble         \
   tinytex        \
   xtable
+
+# autoVAR dependencies
+install2.r --error --skipinstalled -n -1 \
+  qgraph \
+  igraph \
+  fclust

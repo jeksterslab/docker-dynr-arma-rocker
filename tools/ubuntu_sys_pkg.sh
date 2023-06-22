@@ -74,3 +74,7 @@ apt_install                \
     libgsl-dev             \
     libarmadillo-dev       \
     libeigen3-dev
+
+# qgraph
+apt_install   \
+  libglpk-dev
