@@ -25,7 +25,7 @@ The `Docker and Apptainer Build and Push` GitHub actions workflow performs the f
 To launch `Rstudio Server`, run the following.
 
 ```bash
-docker run --rm -ti -e PASSWORD=yourpassword -p 8787:8787 jeksterslab/dynr-arma-rocker
+docker run --rm -ti -e PASSWORD=yourpassword -p 127.0.0.1:8787:8787 jeksterslab/dynr-arma-rocker
 ```
 
 Open `http://localhost:8787` on your web browser to launch `Rstudio Server`.

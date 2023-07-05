@@ -60,20 +60,66 @@ install pfetch/pfetch /usr/local/bin/
 ls -l /usr/local/bin/pfetch
 
 # dynr deps
-apt_install                \
-    libcurl4-openssl-dev   \
-    libharfbuzz-dev        \
-    libfribidi-dev         \
-    libfontconfig1-dev     \
-    build-essential        \
-    cmake                  \
-    libopenblas-dev        \
-    liblapack-dev          \
-    libarpack2-dev         \
-    libsuperlu-dev         \
-    libgsl-dev             \
-    libarmadillo-dev       \
-    libeigen3-dev
+#apt_install                \
+#    libcurl4-openssl-dev   \
+#    libharfbuzz-dev        \
+#    libfribidi-dev         \
+#    libfontconfig1-dev     \
+#    build-essential        \
+#    cmake                  \
+#    libopenblas-dev        \
+#    liblapack-dev          \
+#    libarpack2-dev         \
+#    libsuperlu-dev         \
+#    libgsl-dev             \
+#    libarmadillo-dev       \
+#    libeigen3-dev
+
+# git
+apt_install \
+    git
+
+# curl
+apt_install \
+    libcurl4-openssl-dev
+
+# freetype2
+apt_install            \
+    libfontconfig1-dev \
+    libfreetype6-dev   \
+    libjpeg-dev        \
+    libpng-dev         \
+    libtiff5-dev
+
+# nloptr
+apt_install \
+    cmake
+
+# openssl
+apt_install \
+    libssl-dev
+
+# systemfonts
+apt_install \
+    libfontconfig1-dev
+
+# textshaping
+apt_install         \
+    libfribidi-dev  \
+    libharfbuzz-dev
+
+# xml2
+apt_install \
+    libxml2-dev
+
+# gsl
+apt_install \
+    libgsl-dev
+
+# misc3d
+apt_install    \
+    tcl8.6-dev \
+    tk8.6-dev
 
 # qgraph
 apt_install   \

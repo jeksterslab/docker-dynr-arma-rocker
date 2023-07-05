@@ -32,6 +32,13 @@ install2.r --error --skipinstalled -n -1 \
   tinytex        \
   xtable
 
+# vscode project dependencies
+install2.r --error --skipinstalled -n -1 \
+  languageserver \
+  httpgd         \
+  styler         \
+  lintr
+
 # autoVAR dependencies
 install2.r --error --skipinstalled -n -1 \
   qgraph \
