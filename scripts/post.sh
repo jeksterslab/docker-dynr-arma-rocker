@@ -13,12 +13,7 @@ strip /usr/local/lib/R/site-library/*/libs/*.so
 # Installation information
 echo -e "Session information...\n"
 R -q -e "sessionInfo()"
-
-# Check dynr
-echo -e "Check the dynr package...\n"
-R -q -e "library(dynr)"
-R -e "demo('LinearSDE', package = 'dynr')"
-rm LinearSDE.*
-rm Rplots.pdf
+echo -e "Installed packages...\n"
+R -q -e "unname(installed.packages()[, 1])"
 cat -e "/srv/build/CONTAINER_RELEASE_MSG"
 echo -e "\nBuild done!"

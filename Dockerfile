@@ -1,6 +1,6 @@
 FROM rocker/tidyverse
 
-ADD tools /usr/src/local/src
+ADD scripts /usr/src/local/src
 RUN cd /usr/src/local/src     && \
     chmod 777 setup.sh        && \
     ./setup.sh                && \
@@ -9,5 +9,5 @@ RUN cd /usr/src/local/src     && \
 ENV PATH="/opt/TinyTeX/bin/x86_64-linux:${PATH}"
 
 # extra metadata
-LABEL author="Ivan Jacob Agaloos Pesigan <learn.jeksterslab@gmail.com>"
-LABEL description="jeksterslab/dynr-arma-rocker container."
+LABEL org.opencontainers.image.source="https://github.com/jeksterslab/dynr-arma-rocker" \
+      org.opencontainers.image.authors="Ivan Jacob Agaloos Pesigan <learn.jeksterslab@gmail.com>"

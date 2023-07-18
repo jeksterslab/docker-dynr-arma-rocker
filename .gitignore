@@ -1,5 +1,3 @@
-# always refer to .gitignore in rProject when editing this file
-
 # https://github.com/github/gitignore/blob/main/R.gitignore
 
 # History files
@@ -18,8 +16,6 @@
 
 # Output files from R CMD build
 /*.tar.gz
-# allow package build to be version controlled
-# !/*.tar.gz
 
 # Output files from R CMD check
 /*.Rcheck/
@@ -40,6 +36,8 @@ vignettes/*.pdf
 
 # quarto
 /.quarto/
+/_site/
+/quarto/
 
 # Temporary files created by R markdown
 *.utf8.md
@@ -52,8 +50,9 @@ vignettes/*.pdf
 .Rprofile
 
 # pkgdown site
-docs/
-doc/
+/pkgdown/
+/docs/
+/doc/
 
 # translation temp files
 po/*~
@@ -76,9 +75,9 @@ detritus
 # library
 .library
 
-# etc
-project.Rproj
+# README
+README.html
+README_files/
 
-# diff
-# etc | project.Rproj
-# Output files from R CMD build | /*.tar.gz
+# latex
+latexmkrc

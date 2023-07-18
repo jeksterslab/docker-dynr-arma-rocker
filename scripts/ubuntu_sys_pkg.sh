@@ -47,33 +47,7 @@ apt_install        \
     vim            \
     wget
 
-# lazygit
-LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-tar xf lazygit.tar.gz lazygit
-install lazygit /usr/local/bin
-rm -rf lazygit*
-
-# pfetch
-git clone https://github.com/dylanaraps/pfetch.git
-install pfetch/pfetch /usr/local/bin/
-ls -l /usr/local/bin/pfetch
-
 # dynr deps
-#apt_install                \
-#    libcurl4-openssl-dev   \
-#    libharfbuzz-dev        \
-#    libfribidi-dev         \
-#    libfontconfig1-dev     \
-#    build-essential        \
-#    cmake                  \
-#    libopenblas-dev        \
-#    liblapack-dev          \
-#    libarpack2-dev         \
-#    libsuperlu-dev         \
-#    libgsl-dev             \
-#    libarmadillo-dev       \
-#    libeigen3-dev
 
 # git
 apt_install \

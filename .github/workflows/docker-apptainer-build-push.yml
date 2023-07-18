@@ -1,20 +1,23 @@
 name: Docker and Apptainer Build and Push
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: [ "Make Project" ]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
 
   build:
     runs-on: ubuntu-latest
+
     steps:
       - 
         name: Set the environment variables
-        run: echo "NOW=$( date '+%F-%H%M%S%2N' )" >> $GITHUB_ENV
+        run: |
+          echo "NOW=$( date '+%F-%H%M%S%2N' )" >> $GITHUB_ENV
+          echo "APPTAINER_VERSION=$(curl -s "https://api.github.com/repos/apptainer/apptainer/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')" >> $GITHUB_ENV
       -
         name: Checkout 
         uses: actions/checkout@v3
@@ -39,7 +42,7 @@ jobs:
         name: Set up Apptainer
         uses: eWaterCycle/setup-apptainer@v2
         with:
-          apptainer-version: 1.1.9
+          apptainer-version: ${{ env.APPTAINER_VERSION }}
       -
         name: Build Apptainer container
         run: apptainer build ${{ secrets.DOCKER_HUB_CONTAINER }}.sif docker://${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:${{ env.NOW }}
@@ -67,27 +70,12 @@ jobs:
         uses: thedoctor0/zip-release@0.7.1
         with:
           filename: ${{ secrets.DOCKER_HUB_CONTAINER }}.zip
-          exclusions: '*.git* *.md *.txt Dockerfile /src/*'
+          recursive_exclusions: '*.sif'
       - 
-        name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: GitHub release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ env.NOW }}
-          release_name: sif-${{ env.NOW }}
           body_path: ./release.txt
-          draft: false
-          prerelease: false
-      - 
-        name: Upload release asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ secrets.DOCKER_HUB_CONTAINER }}.zip
-          asset_name: sif-${{ env.NOW }}.zip
-          asset_content_type: application/zip
+          files: ./${{ secrets.DOCKER_HUB_CONTAINER }}.zip
+          name: sif-${{ env.NOW }}
+          tag_name: ${{ env.NOW }}

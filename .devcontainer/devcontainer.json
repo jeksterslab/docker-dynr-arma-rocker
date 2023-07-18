@@ -8,6 +8,7 @@
         "vscode": {
             "extensions": [
                 "GitHub.codespaces",
+                "GitHub.copilot",
                 "GitHub.vscode-github-actions",
                 "ms-azuretools.vscode-docker",
                 "ms-vscode.makefile-tools",
@@ -17,7 +18,8 @@
                 "dracula-theme.theme-dracula"
             ],
             "settings": {
-                "r.rterm.linux": "/usr/local/bin/radian"
+                "r.rterm.linux": "/usr/local/bin/radian",
+                "r.plot.useHttpgd": true
             }
         }
     },
