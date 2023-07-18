@@ -90,13 +90,13 @@ remotes::install_github(
   quiet = TRUE,
   lib = dot_library_folder
 )
-#if (!("rProject" %in% pkg_installed)) {
+# if (!("rProject" %in% pkg_installed)) {
 #  remotes::install_github(
 #    "ijapesigan/rProject",
 #    quiet = TRUE,
 #    lib = dot_library_folder
 #  )
-#}
+# }
 rProject::Project(
   path = path
 )
