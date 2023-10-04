@@ -12,6 +12,7 @@
 #' | `pkg_ver`        | Packages with specific version.                     |
 #' | `ver`            | Version corresponding to packages in `pkg_ver`.     |
 #' | `ignore`         | Items to add to `.Rbuildignore`.                    |
+#' | `license`        | Options are `"mit"`, `"gpl3"`, or `NULL`            |
 #'
 
 project <- "docker-dynr-arma-rocker"
@@ -27,6 +28,8 @@ pkg_ver <- c()
 ver <- c()
 
 ignore <- NULL
+
+license <- NULL
 
 git_user <- "jeksterslab"
 git_email <- "learn.jeksterslab@gmail.com"

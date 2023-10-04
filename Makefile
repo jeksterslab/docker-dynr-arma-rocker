@@ -1,6 +1,6 @@
-.PHONY: all build clean cleanall cleanpkg cleanproj cleanpush cleantinytex clone coverage data dependencies docs dotfiles install latex lint local localforce pdf pkg pkgdown project push quarto style tinytex tinytexforce vignettes
+.PHONY: all build rproject clean cleanall cleanpkg cleanproj cleanpush cleantinytex bib bibrproject clone coverage data dependencies readme docs dotfiles install latex lint local localforce pdf pkg pkgdown project push quarto style tinytex tinytexforce vignettes
 
-push: build docs latex cleanpush coverage
+push: build docs latex coverage cleanpush
 
 project:
 	@echo "\n\nBuilding project...\n\n"
@@ -35,6 +35,14 @@ cleanproj:
 	@echo "\n\nCleaning project...\n\n"
 	@Rscript -e "rProject::CleanProj(\"${PWD}\")"
 
+bib:
+	@echo "\n\nCleaning project...\n\n"
+	@Rscript -e "rProject::Bib(\"${PWD}\", bib_lib = FALSE)"
+
+bibrproject:
+	@echo "\n\nCleaning project...\n\n"
+	@Rscript -e "rProject::Bib(\"${PWD}\", bib_lib = TRUE)"
+
 tinytex: 
 	@echo "\n\nTinyTex...\n\n"
 	@Rscript -e "rProject::TinyTex(\"${PWD}\", force = FALSE)"
@@ -54,7 +62,6 @@ lint: style
 data:
 	@echo "\n\nBuilding data...\n\n"
 	@Rscript -e "rProject::DataProcess(\"${PWD}\")"
-	@Rscript -e "rProject::DataAnalysis(\"${PWD}\")"
 
 dependencies:
 	@echo "\n\nBuilding dependencies...\n\n"
@@ -63,10 +70,11 @@ dependencies:
 vignettes:
 	@echo "\n\nInitial build...\n\n"
 	@Rscript -e "rProject::Build(\"${PWD}\")"
+	@Rscript -e "rProject::DataAnalysis(\"${PWD}\")"
 	@echo "\n\nPrecompiling vignettes...\n\n"
 	@Rscript -e "rProject::VignettesPrecompile(\"${PWD}\")"
 
-build: project pkg dotfiles clean tinytex lint data dependencies vignettes
+build: project pkg dotfiles tinytex lint data dependencies bib vignettes
 	@echo "\n\nBuilding package...\n\n"
 	@Rscript -e "rProject::Build(\"${PWD}\")"
 
@@ -90,9 +98,11 @@ quarto:
 	@echo "\n\nRendering quarto...\n\n"
 	@Rscript -e "rProject::Quarto(\"${PWD}\")"
 
-docs:
+readme:
 	@echo "\n\nBuilding README.md...\n\n"
 	@Rscript -e "rProject::ReadMe(\"${PWD}\")"
+
+docs: readme
 	@echo "\n\nBuilding manual...\n\n"
 	@Rscript -e "rProject::Manual(\"${PWD}\", project = Sys.getenv(\"PROJECT\"))"
 	@echo "\n\nBuilding CITATION.cff...\n\n"
