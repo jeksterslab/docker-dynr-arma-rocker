@@ -48,23 +48,23 @@ jobs:
           apptainer-version: ${{ env.APPTAINER_VERSION }}
       -
         name: Build Apptainer container
-        run: apptainer build ${{ secrets.DOCKER_HUB_CONTAINER }}.sif docker://${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:${{ env.NOW }}
+        run: apptainer build ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.sif docker://${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_CONTAINER }}:${{ env.NOW }}
       -
         name: Run Apptainer container
         run: |
-          apptainer exec ${{ secrets.DOCKER_HUB_CONTAINER }}.sif cat /etc/os-release
-          apptainer exec ${{ secrets.DOCKER_HUB_CONTAINER }}.sif cat /srv/build/CONTAINER_RELEASE_MSG > release.txt
+          apptainer exec ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.sif cat /etc/os-release
+          apptainer exec ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.sif cat /srv/build/CONTAINER_RELEASE_MSG > release.txt
       -
         name: Upload Singularity Image File
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ secrets.DOCKER_HUB_CONTAINER }}.sif
-          path: ./${{ secrets.DOCKER_HUB_CONTAINER }}.sif
+          name: ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.sif
+          path: ./${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.sif
       -
         name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ secrets.DOCKER_HUB_CONTAINER }}.sif
+          name: ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.sif
       -
         name: Test artifact download
         run: ls -R
@@ -72,13 +72,13 @@ jobs:
         name: Zip artifact
         uses: thedoctor0/zip-release@0.7.1
         with:
-          filename: ${{ secrets.DOCKER_HUB_CONTAINER }}.zip
-          recursive_exclusions: '*.sif'
+          filename: ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.zip
+          exclusions: '*.git* Dockerfile Makefile project.Rproj README.md *.devcontainer/* *script/* *.setup/*'
       - 
         name: GitHub release
         uses: softprops/action-gh-release@v1
         with:
           body_path: ./release.txt
-          files: ./${{ secrets.DOCKER_HUB_CONTAINER }}.zip
-          name: sif-${{ env.NOW }}
+          files: ./${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}.zip
+          name: ${{ secrets.DOCKER_HUB_CONTAINER }}-${{ env.NOW }}
           tag_name: ${{ env.NOW }}
