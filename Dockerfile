@@ -1,4 +1,4 @@
-FROM rocker/tidyverse
+FROM rocker/rstudio:4.3.0
 
 ADD scripts /usr/src/local/src
 RUN cd /usr/src/local/src     && \
