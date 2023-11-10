@@ -1,5 +1,4 @@
 FROM rocker/rstudio:4.3.0
-RUN /rocker_scripts/install_tidyverse.sh
 
 ADD scripts /usr/src/local/src
 RUN cd /usr/src/local/src     && \
