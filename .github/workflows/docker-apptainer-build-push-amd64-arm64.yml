@@ -1,4 +1,4 @@
-name: Docker and Apptainer Build and Push
+name: Docker and Apptainer Build and Push [amd64/arm64]
 
 on:
   workflow_run:

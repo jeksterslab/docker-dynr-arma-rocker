@@ -1,15 +1,15 @@
 jeksterslab/dynr-arma-rocker
 ================
 Ivan Jacob Agaloos Pesigan
-2023-11-10
+2023-11-12
 
 <!-- README.md is generated from .setup/readme/README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
 [![Make
 Project](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml)
-[![Docker and Apptainer Build and
-Push](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push.yml)
+[![Docker and Apptainer Build and Push
+\[amd64/arm64\]](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push-amd64-arm64.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push-amd64-arm64.yml)
 [![Shell
 Check](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/shellcheck.yml)
 <!-- badges: end -->
@@ -22,8 +22,8 @@ the [Rocker Project](https://rocker-project.org/) with the
 
 ## GitHub Actions
 
-The `Docker and Apptainer Build and Push` GitHub actions workflow
-performs the following:
+The `Docker and Apptainer Build and Push [amd64/arm64]` GitHub actions
+workflow performs the following:
 
 - Builds the Docker image specified by the `Dockerfile`.
 - Pushes the image to
