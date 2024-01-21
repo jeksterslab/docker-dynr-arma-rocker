@@ -44,3 +44,7 @@ install2.r --error --skipinstalled -n -1 \
   qgraph \
   igraph \
   fclust
+
+# simStateSpace
+install2.r --error --skipinstalled -n -1 \
+  simStateSpace
