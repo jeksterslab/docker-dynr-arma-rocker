@@ -10,7 +10,7 @@ R -e "                      \
           'RcppArmadillo',  \
           'RcppGSL'         \
         ),                  \
-        repos = 'https://packagemanager.rstudio.com/all/__linux__/jammy/latest', \
+        repos = 'https://packagemanager.rstudio.com/all/__linux__/noble/latest', \
         lib = file.path(Sys.getenv('R_HOME'), 'library')                         \
     )                                                                            \
 "
