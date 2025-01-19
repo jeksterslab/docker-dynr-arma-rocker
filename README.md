@@ -1,7 +1,7 @@
 jeksterslab/dynr-arma-rocker
 ================
 Ivan Jacob Agaloos Pesigan
-2025-01-08
+2025-01-19
 
 <!-- README.md is generated from .setup/readme/README.Rmd. Please edit that file -->
 
