@@ -35,9 +35,11 @@ install2.r --error --skipinstalled -n -1 \
 # vscode project dependencies
 install2.r --error --skipinstalled -n -1 \
   languageserver \
-  httpgd         \
   styler         \
   lintr
+
+# removed from CRAN
+# httpgd         \
 
 # autoVAR dependencies
 install2.r --error --skipinstalled -n -1 \
