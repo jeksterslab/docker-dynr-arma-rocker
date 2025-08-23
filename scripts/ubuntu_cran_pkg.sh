@@ -49,6 +49,10 @@ install2.r --error --skipinstalled -n -1 \
 install2.r --error --skipinstalled -n -1 \
   simStateSpace
 
+# bootStateSpace
+install2.r --error --skipinstalled -n -1 \
+  bootStateSpace
+
 # cTMed
 install2.r --error --skipinstalled -n -1 \
   cTMed
