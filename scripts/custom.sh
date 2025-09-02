@@ -15,14 +15,14 @@ R -e "                      \
     )                                                                            \
 "
 
-# Solution to documentation issues
-R -e "                                                    \
-    remotes::install_version(                             \
-        package = 'roxygen2',                             \
-        version = '5.0.1',                                \
-        repos = c(CRAN = 'https://cran.rstudio.com')      \
-    )                                                     \
-"
+## Solution to documentation issues
+#R -e "                                                    \
+#    remotes::install_version(                             \
+#        package = 'roxygen2',                             \
+#        version = '5.0.1',                                \
+#        repos = c(CRAN = 'https://cran.rstudio.com')      \
+#    )                                                     \
+#"
 
 # dynr
 git clone -b arma https://github.com/mhunter1/dynr.git

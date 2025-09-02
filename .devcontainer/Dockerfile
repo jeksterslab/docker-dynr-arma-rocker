@@ -1,4 +1,4 @@
-FROM jeksterslab/dynr-arma-rocker
+FROM jeksterslab/dynr-arma-rocker:latest
 
 #ADD scripts /usr/src/local/src
 #RUN chmod 777 /usr/src/local/src/setup.sh && \
