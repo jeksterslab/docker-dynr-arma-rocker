@@ -1,6 +1,6 @@
 FROM rocker/rstudio:latest
 
-RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/noble/latest"))' >>"${R_HOME}/etc/Rprofile.site"
+# RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/noble/latest"))' >>"${R_HOME}/etc/Rprofile.site"
 
 ADD scripts /usr/src/local/src
 RUN cd /usr/src/local/src     && \
