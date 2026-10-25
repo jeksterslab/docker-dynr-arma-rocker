@@ -4,12 +4,18 @@ push: build docs latex coverage cleanpush
 
 project:
 	@echo "\n\nBuilding project...\n\n"
-	@test -f .setup/scripts/make-project.R || Rscript -e "rProject::Template(\"${PWD}\")"
+	@# a project without make-project.R gets the current one from rProject on
+	@# GitHub (it installs the newest rProject first), so an older rProject in
+	@# the image cannot stop the build; Template() of the image only offline
+	@test -f .setup/scripts/make-project.R || Rscript -e "download.file(\"https://raw.githubusercontent.com/ijapesigan/rProject/main/inst/template/docker/dot-setup/scripts/make-project.R\", \".setup/scripts/make-project.R\", quiet = TRUE)" || Rscript -e "rProject::Template(\"${PWD}\")"
 	@Rscript .setup/scripts/make-project.R ${PWD} ${LOCK}
 
 upgrade:
 	@echo "\n\nUpgrading rProject (the next make auto updates the lock)...\n\n"
-	@test -f .setup/scripts/make-project.R || Rscript -e "rProject::Template(\"${PWD}\")"
+	@# a project without make-project.R gets the current one from rProject on
+	@# GitHub (it installs the newest rProject first), so an older rProject in
+	@# the image cannot stop the build; Template() of the image only offline
+	@test -f .setup/scripts/make-project.R || Rscript -e "download.file(\"https://raw.githubusercontent.com/ijapesigan/rProject/main/inst/template/docker/dot-setup/scripts/make-project.R\", \".setup/scripts/make-project.R\", quiet = TRUE)" || Rscript -e "rProject::Template(\"${PWD}\")"
 	@Rscript .setup/scripts/make-project.R ${PWD} UPGRADE
 
 template:
