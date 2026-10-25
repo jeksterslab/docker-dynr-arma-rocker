@@ -89,6 +89,6 @@ if (
     unlink(namespace)
   }
   devtools::document(path)
-  devtools::install(path, dependencies = FALSE)
+  devtools::install(path, dependencies = FALSE, upgrade = FALSE)
 }
 warnings()

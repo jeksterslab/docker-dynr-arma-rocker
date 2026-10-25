@@ -2,19 +2,6 @@
 
 set -e
 
-# Solution to hard-coded Makevars in the arma branch
-R -e "                      \
-    install.packages(       \
-        c(                  \
-          'Rcpp',           \
-          'RcppArmadillo',  \
-          'RcppGSL'         \
-        ),                  \
-        repos = 'https://packagemanager.rstudio.com/all/__linux__/noble/latest', \
-        lib = file.path(Sys.getenv('R_HOME'), 'library')                         \
-    )                                                                            \
-"
-
 ## Solution to documentation issues
 #R -e "                                                    \
 #    remotes::install_version(                             \
@@ -23,14 +10,6 @@ R -e "                      \
 #        repos = c(CRAN = 'https://cran.rstudio.com')      \
 #    )                                                     \
 #"
-
-# dynr
-git clone -b arma https://github.com/mhunter1/dynr.git
-cd dynr
-./configure
-make clean install
-cd ..
-rm -rf dynr
 
 # Directories
 DEFAULT_USER=${DEFAULT_USER:-"rstudio"}

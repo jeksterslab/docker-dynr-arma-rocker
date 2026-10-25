@@ -1,0 +1,1 @@
+An RStudio Server image based on the [Rocker Project](https://rocker-project.org/) with [dynr](https://github.com/mhunter1/dynr) built from source (the `arma` branch), Stan, JAGS, ctsem, and the Mplus demo (amd64).

@@ -18,6 +18,19 @@
 
 project <- "docker-dynr-arma-rocker"
 
+type <- "docker"
+
+workflows <- c(
+  "docker-build-push-multi",
+  "docker-build-push-daily-multi"
+)
+
+workflow_daily <- "dynr-arma-rocker"
+
+workflow_title <- "Docker Build and Push dynr-arma-rocker [multi] (Daily)"
+
+workflow_cron <- "0 0 * * *"
+
 rproject_ver <- NULL
 
 pkg_cran <- c()

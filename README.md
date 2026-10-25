@@ -1,60 +1,68 @@
-jeksterslab/dynr-arma-rocker
-================
-Ivan Jacob Agaloos Pesigan
-2026-08-29
 
-<!-- README.md is generated from .setup/readme/README.Rmd. Please edit that file -->
+<!-- README.md is generated from .setup/readme/README.Rmd, which rProject's
+docker template writes. Edit .setup/readme/description.md, scripts/cran.txt,
+scripts/github.txt, or .setup/scripts/project.R instead. -->
+
+# jeksterslab/dynr-arma-rocker
 
 <!-- badges: start -->
 
+[![Docker Build and Push dynr-arma-rocker \[multi\]
+(Daily)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push-daily-multi-dynr-arma-rocker.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push-daily-multi-dynr-arma-rocker.yml)
+[![Docker Build and Push
+\[multi\]](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push-multi.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push-multi.yml)
 [![Make
 Project](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml)
-[![Docker and Apptainer Build and Push
-\[amd64/arm64\]](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push-amd64-arm64.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push-amd64-arm64.yml)
+[![Non-ASCII
+Check](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/non-ascii-check.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/non-ascii-check.yml)
 [![Shell
 Check](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/shellcheck.yml)
 <!-- badges: end -->
 
 ## Description
 
-Docker and Apptainer/Singularity containers for `R` projects based on
-the [Rocker Project](https://rocker-project.org/) with the
-[dynr](https://github.com/mhunter1/dynr) (arma branch) package.
+An RStudio Server image based on the [Rocker
+Project](https://rocker-project.org/) with
+[dynr](https://github.com/mhunter1/dynr) built from source (the `arma`
+branch), Stan, JAGS, ctsem, and the Mplus demo (amd64).
 
-## GitHub Actions
+Based on `rocker/rstudio:latest`; built for linux/amd64 and linux/arm64.
+Source: <https://github.com/jeksterslab/docker-dynr-arma-rocker>.
 
-The `Docker and Apptainer Build and Push [amd64/arm64]` GitHub actions
-workflow performs the following:
+## Use
 
-- Builds the Docker image specified by the `Dockerfile`.
-- Pushes the image to
-  [DockerHub](https://hub.docker.com/r/jeksterslab/dynr-arma-rocker)
-  using the tags `latest` and
-  `date and time of build (YEAR-MM-DD-HHMMSSMS)`.
-- Builds the Singularity Image File (SIF) using Apptainer based on the
-  Docker Hub image from the previous step.
-- Creates a GitHub release named `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS`.
-  Note that `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.zip` contains the SIF.
-
-## Docker Container
-
-To launch `Rstudio Server`, run the following.
+Docker (Docker Hub or the GitHub Container Registry):
 
 ``` bash
-docker run --rm -ti -e PASSWORD=yourpassword -p 127.0.0.1:8787:8787 jeksterslab/dynr-arma-rocker
+docker run -it jeksterslab/dynr-arma-rocker
+docker run -it ghcr.io/jeksterslab/dynr-arma-rocker
 ```
 
-Open `http://localhost:8787` on your web browser to launch
-`Rstudio Server`.
-
-- username: rstudio
-- password: yourpassword
-
-## Apptainer Shell
-
-Download and unzip `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.zip` from the
-GitHub release to extract `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.sif`.
+Apptainer:
 
 ``` bash
-apptainer shell dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.sif
+apptainer pull dynr-arma-rocker.sif docker://jeksterslab/dynr-arma-rocker
+apptainer shell dynr-arma-rocker.sif
 ```
+
+## Contents
+
+R packages from CRAN (`scripts/cran.txt`), with their dependencies:
+
+- development: devtools, knitr, languageserver, lintr, remotes,
+  rmarkdown, styler, testthat, tinytex
+- Bayesian and continuous-time models: rjags, R2jags, rstan, ctsem
+
+## Builds
+
+- Docker Build and Push dynr-arma-rocker \[multi\] (Daily)
+  (`docker-build-push-daily-multi-dynr-arma-rocker.yml`): daily at 00:00
+  UTC, when the base image is rebuilt
+- Docker Build and Push \[multi\] (`docker-build-push-multi.yml`): after
+  Make Project
+- Make Project (`make.yml`): on push
+- Non-ASCII Check (`non-ascii-check.yml`): after Make Project
+- Shell Check (`shellcheck.yml`): after Make Project
+
+The images are pushed to Docker Hub and the GitHub Container Registry as
+`jeksterslab/dynr-arma-rocker:latest`.

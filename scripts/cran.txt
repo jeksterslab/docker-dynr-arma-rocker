@@ -1,0 +1,20 @@
+# CRAN packages wanted, one per line, never their dependencies
+# (install-cran.sh). dynr's own dependencies come from its DESCRIPTION
+# (dynr.sh).
+
+# development
+devtools
+knitr
+languageserver
+lintr
+remotes
+rmarkdown
+styler
+testthat
+tinytex
+
+# Bayesian and continuous-time models
+rjags
+R2jags
+rstan
+ctsem

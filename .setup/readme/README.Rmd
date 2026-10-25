@@ -1,58 +1,233 @@
 ---
-title: "jeksterslab/dynr-arma-rocker"
-author: "Ivan Jacob Agaloos Pesigan"
-date: "`r Sys.Date()`"
 output: github_document
 ---
 
-<!-- README.md is generated from .setup/readme/README.Rmd. Please edit that file -->
+<!-- README.md is generated from .setup/readme/README.Rmd, which rProject's
+docker template writes. Edit .setup/readme/description.md, scripts/cran.txt,
+scripts/github.txt, or .setup/scripts/project.R instead. -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  echo = FALSE,
+  results = "asis"
+)
+Read <- function(file) {
+  if (!file.exists(file)) {
+    return(character(0))
+  }
+  x <- readLines(file, warn = FALSE)
+  trimws(x[!grepl(pattern = "^[[:space:]]*(#|$)", x = x)])
+}
+# the public repository (owner/repository) names the image: locally from
+# .setup/repo/public-github.md (private), in GitHub Actions (Make Project
+# renders the README in the public repository) from GITHUB_REPOSITORY;
+# without either the README would read NA/NA, so stop
+public <- Read(file.path(".setup", "repo", "public-github.md"))[1]
+if (is.na(public) || !nzchar(public)) {
+  public <- Sys.getenv("GITHUB_REPOSITORY")
+}
+if (!grepl(pattern = "^[^/]+/[^/]+$", x = public)) {
+  stop(
+    paste0(
+      "\n\nNo public repository (.setup/repo/public-github.md or",
+      " GITHUB_REPOSITORY): the README cannot name the image.\n\n"
+    ),
+    call. = FALSE
+  )
+}
+owner <- sub(pattern = "/.*$", replacement = "", x = public)
+repo <- sub(pattern = "^.*/", replacement = "", x = public)
+image <- paste0(
+  owner,
+  "/",
+  sub(pattern = "^docker-", replacement = "", x = repo)
+)
+from <- sub(
+  pattern = "^FROM[[:space:]]+",
+  replacement = "",
+  x = grep(pattern = "^FROM", x = readLines("Dockerfile"), value = TRUE)[1]
+)
+files <- sort(
+  list.files(
+    path = file.path(".github", "workflows"),
+    pattern = "\\.ya?ml$"
+  )
+)
+text <- lapply(
+  X = file.path(".github", "workflows", files),
+  FUN = readLines,
+  warn = FALSE
+)
+titles <- vapply(
+  X = text,
+  FUN = function(x) {
+    line <- grep(pattern = "^name:", x = x, value = TRUE)[1]
+    trimws(sub(pattern = "^name:", replacement = "", x = line))
+  },
+  FUN.VALUE = character(1)
+)
+Triggers <- function(x) {
+  out <- character(0)
+  cron <- sub(
+    pattern = "^.*cron:[[:space:]]*\"?([^\"]*)\"?.*$",
+    replacement = "\\1",
+    x = grep(pattern = "cron:", x = x, value = TRUE)
+  )
+  if (length(cron) > 0L) {
+    part <- strsplit(x = cron[1], split = " ", fixed = TRUE)[[1]]
+    out <- c(
+      out,
+      sprintf(
+        "daily at %02d:%02d UTC",
+        as.integer(part[2]),
+        as.integer(part[1])
+      )
+    )
+  }
+  if (any(grepl(pattern = "^  workflow_run:", x = x))) {
+    out <- c(out, "after Make Project")
+  }
+  if (any(grepl(pattern = "^  push:", x = x))) {
+    out <- c(out, "on push")
+  }
+  if (any(grepl(pattern = "base-image-built", x = x))) {
+    out <- c(out, "when the base image is rebuilt")
+  }
+  ifelse(length(out) > 0L, paste(out, collapse = ", "), "by hand")
+}
+arm64 <- any(
+  vapply(
+    X = text,
+    FUN = function(x) {
+      any(grepl(pattern = "linux/arm64", x = x, fixed = TRUE))
+    },
+    FUN.VALUE = logical(1)
+  )
+)
+packages <- Read(file.path("scripts", "cran.txt"))
+cran <- if (file.exists(file.path("scripts", "cran.txt"))) {
+  readLines(file.path("scripts", "cran.txt"), warn = FALSE)
+} else {
+  character(0)
+}
+github <- Read(file.path("scripts", "github.txt"))
+description <- file.path(".setup", "readme", "description.md")
+```
+
+# `r image`
+
+```{r}
+cat(
+  "<!-- badges: start -->",
+  paste0(
+    "[![", titles, "](https://github.com/", public, "/actions/workflows/",
+    files, "/badge.svg)](https://github.com/", public, "/actions/workflows/",
+    files, ")"
+  ),
+  "<!-- badges: end -->",
+  sep = "\n"
 )
 ```
 
-<!-- badges: start -->
-[![Make Project](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml)
-[![Docker and Apptainer Build and Push [amd64/arm64]](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push-amd64-arm64.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-apptainer-build-push-amd64-arm64.yml)
-[![Shell Check](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/shellcheck.yml)
-<!-- badges: end -->
-
 ## Description
 
-Docker and Apptainer/Singularity containers for `R` projects based on the [Rocker Project](https://rocker-project.org/)
-with the [dynr](https://github.com/mhunter1/dynr) (arma branch) package.
-
-## GitHub Actions
-
-The `Docker and Apptainer Build and Push [amd64/arm64]` GitHub actions workflow performs the following:
-
-- Builds the Docker image specified by the `Dockerfile`.
-- Pushes the image to [DockerHub](https://hub.docker.com/r/jeksterslab/dynr-arma-rocker) using the tags `latest` and `date and time of build (YEAR-MM-DD-HHMMSSMS)`.
-- Builds the Singularity Image File (SIF) using Apptainer based on the Docker Hub image from the previous step.
-- Creates a GitHub release named `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS`. Note that `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.zip` contains the SIF. 
-
-## Docker Container
-
-To launch `Rstudio Server`, run the following.
-
-```bash
-docker run --rm -ti -e PASSWORD=yourpassword -p 127.0.0.1:8787:8787 jeksterslab/dynr-arma-rocker
+```{r}
+if (file.exists(description)) {
+  cat(readLines(description, warn = FALSE), sep = "\n")
+  cat("\n")
+}
+cat(
+  "\nBased on `", from, "`; built for ",
+  ifelse(arm64, "linux/amd64 and linux/arm64", "linux/amd64"),
+  ". Source: <https://github.com/", public, ">.\n",
+  sep = ""
+)
 ```
 
-Open `http://localhost:8787` on your web browser to launch `Rstudio Server`.
+## Use
 
-- username: rstudio
-- password: yourpassword
+```{r}
+cat(
+  "Docker (Docker Hub or the GitHub Container Registry):\n\n",
+  "```bash\n",
+  "docker run -it ", image, "\n",
+  "docker run -it ghcr.io/", image, "\n",
+  "```\n\n",
+  "Apptainer:\n\n",
+  "```bash\n",
+  "apptainer pull ", sub("^.*/", "", image), ".sif docker://", image, "\n",
+  "apptainer shell ", sub("^.*/", "", image), ".sif\n",
+  "```\n",
+  sep = ""
+)
+```
 
-## Apptainer Shell
+```{r}
+if (length(packages) > 0L || length(github) > 0L) {
+  cat("## Contents\n\n")
+}
+if (length(packages) > 0L) {
+  cat("R packages from CRAN (`scripts/cran.txt`), with their dependencies:\n\n")
+  # the file's header (the comments before the first blank line) is no
+  # group; a comment after it names the group of the lines below it
+  lines <- trimws(cran)
+  blank <- which(!nzchar(lines))
+  if (length(blank) > 0L && all(grepl("^#", lines[seq_len(blank[1] - 1L)]))) {
+    lines <- lines[-seq_len(blank[1])]
+  }
+  group <- "Other"
+  groups <- list()
+  for (line in lines) {
+    if (!nzchar(line)) {
+      next
+    }
+    if (grepl(pattern = "^#", x = line)) {
+      group <- trimws(sub(pattern = "^#+", replacement = "", x = line))
+      next
+    }
+    groups[[group]] <- c(groups[[group]], line)
+  }
+  groups <- groups[lengths(groups) > 0L]
+  if (identical(names(groups), "Other")) {
+    cat(paste(groups[["Other"]], collapse = ", "), "\n", sep = "")
+  } else {
+    for (g in names(groups)) {
+      cat("- ", g, ": ", paste(groups[[g]], collapse = ", "), "\n", sep = "")
+    }
+  }
+  cat("\n")
+}
+if (length(github) > 0L) {
+  cat(
+    "R packages from GitHub (`scripts/github.txt`), installed after CRAN:\n\n"
+  )
+  cat(
+    paste0(
+      "- [", sub("@.*$", "", github), "](https://github.com/",
+      sub("@.*$", "", github), ")"
+    ),
+    sep = "\n"
+  )
+  cat("\n")
+}
+```
 
-Download and unzip `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.zip` from the GitHub release to extract `dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.sif`.
+## Builds
 
-```bash
-apptainer shell dynr-arma-rocker-YEAR-MM-DD-HHMMSSMS.sif
+```{r}
+cat(
+  paste0(
+    "- ", titles, " (`", files, "`): ",
+    vapply(X = text, FUN = Triggers, FUN.VALUE = character(1))
+  ),
+  sep = "\n"
+)
+cat(
+  "\nThe images are pushed to Docker Hub and the GitHub Container Registry ",
+  "as `",
+  image, ":latest`.\n",
+  sep = ""
+)
 ```
