@@ -15,18 +15,18 @@ knitr::opts_chunk$set(
 )
 Read <- function(file) {
   if (!file.exists(file)) {
-    return(character(0))
+    return(character(length = 0))
   }
-  x <- readLines(file, warn = FALSE)
-  trimws(x[!grepl(pattern = "^[[:space:]]*(#|$)", x = x)])
+  x <- readLines(con = file, warn = FALSE)
+  trimws(x = x[!grepl(pattern = "^[[:space:]]*(#|$)", x = x)])
 }
 # the public repository (owner/repository) names the image: locally from
 # .setup/repo/public-github.md (private), in GitHub Actions (Make Project
 # renders the README in the public repository) from GITHUB_REPOSITORY;
 # without either the README would read NA/NA, so stop
 public <- Read(file.path(".setup", "repo", "public-github.md"))[1]
-if (is.na(public) || !nzchar(public)) {
-  public <- Sys.getenv("GITHUB_REPOSITORY")
+if (is.na(x = public) || !nzchar(x = public)) {
+  public <- Sys.getenv(x = "GITHUB_REPOSITORY")
 }
 if (!grepl(pattern = "^[^/]+/[^/]+$", x = public)) {
   stop(
@@ -47,10 +47,14 @@ image <- paste0(
 from <- sub(
   pattern = "^FROM[[:space:]]+",
   replacement = "",
-  x = grep(pattern = "^FROM", x = readLines("Dockerfile"), value = TRUE)[1]
+  x = grep(
+    pattern = "^FROM",
+    x = readLines(con = "Dockerfile"),
+    value = TRUE
+  )[1]
 )
 files <- sort(
-  list.files(
+  x = list.files(
     path = file.path(".github", "workflows"),
     pattern = "\\.ya?ml$"
   )
@@ -64,25 +68,25 @@ titles <- vapply(
   X = text,
   FUN = function(x) {
     line <- grep(pattern = "^name:", x = x, value = TRUE)[1]
-    trimws(sub(pattern = "^name:", replacement = "", x = line))
+    trimws(x = sub(pattern = "^name:", replacement = "", x = line))
   },
-  FUN.VALUE = character(1)
+  FUN.VALUE = character(length = 1)
 )
 Triggers <- function(x) {
-  out <- character(0)
+  out <- character(length = 0)
   cron <- sub(
     pattern = "^.*cron:[[:space:]]*\"?([^\"]*)\"?.*$",
     replacement = "\\1",
     x = grep(pattern = "cron:", x = x, value = TRUE)
   )
-  if (length(cron) > 0L) {
+  if (length(x = cron) > 0L) {
     part <- strsplit(x = cron[1], split = " ", fixed = TRUE)[[1]]
     out <- c(
       out,
       sprintf(
-        "daily at %02d:%02d UTC",
-        as.integer(part[2]),
-        as.integer(part[1])
+        fmt = "daily at %02d:%02d UTC",
+        as.integer(x = part[2]),
+        as.integer(x = part[1])
       )
     )
   }
@@ -95,7 +99,11 @@ Triggers <- function(x) {
   if (any(grepl(pattern = "base-image-built", x = x))) {
     out <- c(out, "when the base image is rebuilt")
   }
-  ifelse(length(out) > 0L, paste(out, collapse = ", "), "by hand")
+  ifelse(
+    test = length(x = out) > 0L,
+    yes = paste(out, collapse = ", "),
+    no = "by hand"
+  )
 }
 arm64 <- any(
   vapply(
@@ -103,14 +111,14 @@ arm64 <- any(
     FUN = function(x) {
       any(grepl(pattern = "linux/arm64", x = x, fixed = TRUE))
     },
-    FUN.VALUE = logical(1)
+    FUN.VALUE = logical(length = 1)
   )
 )
 packages <- Read(file.path("scripts", "cran.txt"))
 cran <- if (file.exists(file.path("scripts", "cran.txt"))) {
-  readLines(file.path("scripts", "cran.txt"), warn = FALSE)
+  readLines(con = file.path("scripts", "cran.txt"), warn = FALSE)
 } else {
-  character(0)
+  character(length = 0)
 }
 github <- Read(file.path("scripts", "github.txt"))
 description <- file.path(".setup", "readme", "description.md")
@@ -135,12 +143,12 @@ cat(
 
 ```{r}
 if (file.exists(description)) {
-  cat(readLines(description, warn = FALSE), sep = "\n")
+  cat(readLines(con = description, warn = FALSE), sep = "\n")
   cat("\n")
 }
 cat(
   "\nBased on `", from, "`; built for ",
-  ifelse(arm64, "linux/amd64 and linux/arm64", "linux/amd64"),
+  ifelse(test = arm64, yes = "linux/amd64 and linux/arm64", no = "linux/amd64"),
   ". Source: <https://github.com/", public, ">.\n",
   sep = ""
 )
@@ -149,6 +157,33 @@ cat(
 ## Use
 
 ```{r}
+# RStudio Server: the image publishes port 8787 or installs it
+dockerfile <- readLines(con = "Dockerfile", warn = FALSE)
+rstudio <- any(
+  grepl(pattern = "EXPOSE[[:space:]]+8787|install_rstudio", x = dockerfile)
+)
+if (rstudio) {
+  user <- sub(
+    pattern = "^.*DEFAULT_USER=\"?([^\" ]+)\"?.*$",
+    replacement = "\\1",
+    x = grep(pattern = "DEFAULT_USER=", x = dockerfile, value = TRUE)[1]
+  )
+  if (is.na(x = user)) {
+    user <- "rstudio"
+  }
+  cat(
+    "RStudio Server (Docker):\n\n",
+    "```bash\n",
+    "docker run --rm -ti -e PASSWORD=yourpassword",
+    " -p 127.0.0.1:8787:8787 ", image, "\n",
+    "```\n\n",
+    "Open `http://localhost:8787` in a web browser to launch",
+    " RStudio Server (`127.0.0.1` keeps it on this computer).\n\n",
+    "- username: ", user, "\n",
+    "- password: yourpassword\n\n",
+    sep = ""
+  )
+}
 cat(
   "Docker (Docker Hub or the GitHub Container Registry):\n\n",
   "```bash\n",
@@ -157,56 +192,72 @@ cat(
   "```\n\n",
   "Apptainer:\n\n",
   "```bash\n",
-  "apptainer pull ", sub("^.*/", "", image), ".sif docker://", image, "\n",
-  "apptainer shell ", sub("^.*/", "", image), ".sif\n",
+  "apptainer pull ",
+  sub(pattern = "^.*/", replacement = "", x = image),
+  ".sif docker://",
+  image,
+  "\n",
+  "apptainer shell ",
+  sub(pattern = "^.*/", replacement = "", x = image),
+  ".sif\n",
   "```\n",
   sep = ""
 )
 ```
 
 ```{r}
-if (length(packages) > 0L || length(github) > 0L) {
+if (length(x = packages) > 0L || length(x = github) > 0L) {
   cat("## Contents\n\n")
 }
-if (length(packages) > 0L) {
+if (length(x = packages) > 0L) {
   cat("R packages from CRAN (`scripts/cran.txt`), with their dependencies:\n\n")
   # the file's header (the comments before the first blank line) is no
   # group; a comment after it names the group of the lines below it
-  lines <- trimws(cran)
-  blank <- which(!nzchar(lines))
-  if (length(blank) > 0L && all(grepl("^#", lines[seq_len(blank[1] - 1L)]))) {
-    lines <- lines[-seq_len(blank[1])]
+  lines <- trimws(x = cran)
+  blank <- which(x = !nzchar(x = lines))
+  if (
+    length(x = blank) > 0L &&
+      all(
+        grepl(
+          pattern = "^#",
+          x = lines[seq_len(length.out = blank[1] - 1L)]
+        )
+      )
+  ) {
+    lines <- lines[-seq_len(length.out = blank[1])]
   }
   group <- "Other"
   groups <- list()
   for (line in lines) {
-    if (!nzchar(line)) {
+    if (!nzchar(x = line)) {
       next
     }
     if (grepl(pattern = "^#", x = line)) {
-      group <- trimws(sub(pattern = "^#+", replacement = "", x = line))
+      group <- trimws(x = sub(pattern = "^#+", replacement = "", x = line))
       next
     }
     groups[[group]] <- c(groups[[group]], line)
   }
-  groups <- groups[lengths(groups) > 0L]
-  if (identical(names(groups), "Other")) {
+  groups <- groups[lengths(x = groups) > 0L]
+  if (identical(x = names(x = groups), y = "Other")) {
     cat(paste(groups[["Other"]], collapse = ", "), "\n", sep = "")
   } else {
-    for (g in names(groups)) {
+    for (g in names(x = groups)) {
       cat("- ", g, ": ", paste(groups[[g]], collapse = ", "), "\n", sep = "")
     }
   }
   cat("\n")
 }
-if (length(github) > 0L) {
+if (length(x = github) > 0L) {
   cat(
     "R packages from GitHub (`scripts/github.txt`), installed after CRAN:\n\n"
   )
   cat(
     paste0(
-      "- [", sub("@.*$", "", github), "](https://github.com/",
-      sub("@.*$", "", github), ")"
+      "- [",
+      sub(pattern = "@.*$", replacement = "", x = github),
+      "](https://github.com/",
+      sub(pattern = "@.*$", replacement = "", x = github), ")"
     ),
     sep = "\n"
   )
@@ -220,7 +271,7 @@ if (length(github) > 0L) {
 cat(
   paste0(
     "- ", titles, " (`", files, "`): ",
-    vapply(X = text, FUN = Triggers, FUN.VALUE = character(1))
+    vapply(X = text, FUN = Triggers, FUN.VALUE = character(length = 1))
   ),
   sep = "\n"
 )

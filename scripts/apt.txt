@@ -37,4 +37,3 @@ tcl8.6-dev
 tk8.6-dev
 libglpk-dev
 pkg-config
-jags

@@ -14,9 +14,13 @@ else
 fi
 
 bash install-apt.sh
+bash rproject_sys.sh
+bash rproject.sh
+bash rjags_sys.sh
 bash install-cran.sh
 bash dynr.sh
-bash custom.sh
+bash install-github.sh
 bash mpdemo.sh
+bash custom.sh
 bash check.sh
 bash post.sh
