@@ -126,6 +126,8 @@ description <- file.path(".setup", "readme", "description.md")
 
 # `r image`
 
+Updated `r format(Sys.time(), '%Y-%m-%d %H:%M:%S', tz = 'UTC')` UTC.
+
 ```{r}
 cat(
   "<!-- badges: start -->",

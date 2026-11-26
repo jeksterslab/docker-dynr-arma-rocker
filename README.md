@@ -5,6 +5,8 @@ scripts/github.txt, or .setup/scripts/project.R instead. -->
 
 # jeksterslab/dynr-arma-rocker
 
+Updated 2026-11-26 15:53:45 UTC.
+
 <!-- badges: start -->
 [![Make Project](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml)
 [![Docker Build and Push dynr-arma-rocker [multi] (Daily)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push-daily-multi-dynr-arma-rocker.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/docker-build-push-daily-multi-dynr-arma-rocker.yml)
