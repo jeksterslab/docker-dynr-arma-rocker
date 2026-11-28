@@ -5,7 +5,7 @@ scripts/github.txt, or .setup/scripts/project.R instead. -->
 
 # jeksterslab/dynr-arma-rocker
 
-Updated 2026-11-28 04:37:34 UTC.
+Updated 2026-11-28 04:43:09 UTC.
 
 <!-- badges: start -->
 [![Make Project](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml/badge.svg)](https://github.com/jeksterslab/docker-dynr-arma-rocker/actions/workflows/make.yml)
